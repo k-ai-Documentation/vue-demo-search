@@ -4,7 +4,7 @@
         img(src="@/assets/logo.svg")
     search-bar(:newInput="newInput" @updateInput="handleInputUpdate" @search="searchRequest")
     .loading(v-if="loading")
-        p Please wait...
+        p Loading {{ loadingProgress }}%
     .search-result(v-if="searchAnswer")
         p.answer {{ searchAnswer.answer }}
         .answer-block
@@ -27,6 +27,7 @@ import { KaiStudio } from "kaistudio-sdk-js"
 
 const newInput = ref('');
 const searchInput = ref('');
+const loadingProgress = ref(0);
 const searchAnswer: Ref<SearchResult | null> = ref(null)
 const loading: Ref<boolean> = ref(false)
 const kaiSearch = new KaiStudio({ organizationId: process.env.VUE_APP_ORGANIZATION_ID, instanceId: process.env.VUE_APP_INSTANCE_ID, apiKey: process.env.VUE_APP_API_KEY })
@@ -42,19 +43,33 @@ const searchNewQuestion = (question: string) => {
 }
 
 async function searchRequest() {
+    let interval: number | undefined; 
     try {
         if (searchInput.value) {
-            searchAnswer.value = null
-            loading.value = true
-            const request = await kaiSearch.search().query(searchInput.value, "")
-            loading.value = false
-            searchAnswer.value = request
+            searchAnswer.value = null;
+            loading.value = true;
+            loadingProgress.value = 0;
+            // simulate loading
+            interval = setInterval(() => {
+                if (loadingProgress.value < 90) {
+                    loadingProgress.value += 10;
+                } else if (loadingProgress.value >= 90 && loadingProgress.value < 100) {
+                    loadingProgress.value = 100;
+                }
+            }, 1000);
+
+            const request = await kaiSearch.search().query(searchInput.value, "");
+            await new Promise(resolve => setTimeout(resolve, 500)); 
+            searchAnswer.value = request;
         }
     } catch (e) {
-        console.error(e)
-        return null
+        console.error(e);
+    } finally {
+        if (interval !== undefined) clearInterval(interval);
+        loading.value = false;
     }
 }
+
 </script>
 
 

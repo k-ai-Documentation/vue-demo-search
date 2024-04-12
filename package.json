@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "core-js": "^3.8.3",
-    "kaistudio-sdk-js": "file:../kai-studio/sdk-js",
+    "kaistudio-sdk-js": "file:../sdk-js",
     "pug": "^3.0.2",
     "sass-loader": "^13.3.2",
     "vue": "^3.2.13",
