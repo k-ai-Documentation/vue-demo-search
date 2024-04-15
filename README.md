@@ -4,7 +4,7 @@
 This project is a demo for vue3, which contains 'search' function with sdk-js. This demo will show you how to use sdk-js in vue3.
 
 ## Before setup
-Clone sdk-js(https://github.com/k-ai-Documentation/sdk-js) and vue-demo-search(https://github.com/k-ai-Documentation/vue-demo-search).
+Clone [sdk-js](https://github.com/k-ai-Documentation/sdk-js) and [vue-demo-search](https://github.com/k-ai-Documentation/vue-demo-search).
 
 And your directory should like this:
 ```
@@ -35,7 +35,7 @@ npm install
 npm run serve
 ```
 
-# How to use sdk-js(https://github.com/k-ai-Documentation/sdk-js)
+# How to use [sdk-js](https://github.com/k-ai-Documentation/sdk-js)
 
 + make sure you have installed sdk-js and react-demo.
 ```
