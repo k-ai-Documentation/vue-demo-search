@@ -9,14 +9,14 @@
 import { defineEmits, ref, defineProps, watch } from 'vue';
 
 const props = defineProps({
-    newInput: String
+    newInput: String,
 });
 
 const emit = defineEmits(['updateInput', 'search']);
 const isClicked = ref(false);
 const searchInput = ref('');
 
-const updateInput = (event: { target: { value: any; }; }) => {
+const updateInput = (event: { target: { value: any } }) => {
     emit('updateInput', event.target.value);
 };
 
@@ -26,17 +26,15 @@ const emitSearch = () => {
 
 const clearSearch = () => {
     searchInput.value = '';
-}
+};
 
 watch(
     () => props.newInput,
     (newValue) => {
-        props.newInput ? searchInput.value = props.newInput : searchInput.value = '';
+        props.newInput ? (searchInput.value = props.newInput) : (searchInput.value = '');
     }
-)
-
+);
 </script>
-    
 
 <style lang="scss" scoped>
 .search-bar {
@@ -47,7 +45,7 @@ watch(
     border-radius: 80px;
     width: 515px;
     height: 49px;
-    border: 1px solid #555B6F;
+    border: 1px solid #555b6f;
     input {
         outline: none;
         border: none;
@@ -63,10 +61,10 @@ watch(
         overflow: hidden;
         text-overflow: ellipsis;
         width: 432px;
-            &::placeholder {
-                font-weight: normal;
-                font-size: 14px;
-            }
+        &::placeholder {
+            font-weight: normal;
+            font-size: 14px;
+        }
     }
     .left {
         position: absolute;

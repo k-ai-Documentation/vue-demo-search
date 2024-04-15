@@ -37,7 +37,7 @@ npm run serve
 
 # How to use [sdk-js](https://github.com/k-ai-Documentation/sdk-js)
 
-+ make sure you have installed sdk-js and react-demo.
++ make sure you have installed sdk-js and vue-demo.
 ```
 npm install ../sdk-js
 npm install
