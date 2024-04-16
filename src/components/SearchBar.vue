@@ -1,12 +1,14 @@
 <template lang="pug">
 .search-bar 
     input(type="text" placeholder="Search for anything" v-model="searchInput" @input="updateInput" @keyup.enter="emitSearch" @focus="isClicked=true" @blur="isClicked=false")
-    img(src="@/assets/search.svg" @click="emitSearch" :class="isClicked || searchInput ? 'left' : 'right'")
-    img.icon-close(v-if="searchInput" src="@/assets/close-small.svg" @click="clearSearch")
+    img.icon-18.left(:src="searchIcon" @click="emitSearch")
+    img.icon-18.icon-close(v-if="searchInput" :src="closeIcon" @click="clearSearch")
 </template>
 
 <script setup lang="ts">
 import { defineEmits, ref, defineProps, watch } from 'vue';
+import searchIcon from 'kai-assets/icons/search.svg';
+import closeIcon from 'kai-assets/icons/close-small.svg';
 
 const props = defineProps({
     newInput: String,
@@ -42,10 +44,9 @@ watch(
     align-items: center;
     justify-content: left;
     position: relative;
-    border-radius: 80px;
-    width: 515px;
-    height: 49px;
-    border: 1px solid #555b6f;
+    width: 626px;
+    height: 30px;
+    border-radius: 20px;
     input {
         outline: none;
         border: none;
@@ -53,28 +54,15 @@ watch(
         min-width: 100px;
         display: inline-block;
         width: 100%;
-        padding: 0 14px 0 42px;
-        height: 49px;
         font-size: 14px;
-        font-weight: bold;
-        color: black;
+        color: var(--white-color);
         overflow: hidden;
         text-overflow: ellipsis;
-        width: 432px;
-        &::placeholder {
-            font-weight: normal;
-            font-size: 14px;
-        }
+        width: 543px;
     }
     .left {
         position: absolute;
         left: 14px;
-        height: 22px;
-        cursor: pointer;
-    }
-    .right {
-        position: absolute;
-        right: 25px;
         height: 22px;
         cursor: pointer;
     }
