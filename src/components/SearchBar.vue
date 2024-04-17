@@ -1,6 +1,6 @@
 <template lang="pug">
 .search-bar 
-    input(type="text" placeholder="Search for anything" v-model="searchInput" @input="updateInput" @keyup.enter="emitSearch" @focus="isClicked=true" @blur="isClicked=false")
+    input(type="text" placeholder="Search for anything" v-model="searchInput" @input="updateInput" @keyup.enter="emitSearch")
     img.icon-18.left(:src="searchIcon" @click="emitSearch")
     img.icon-18.icon-close(v-if="searchInput" :src="closeIcon" @click="clearSearch")
 </template>
@@ -15,7 +15,6 @@ const props = defineProps({
 });
 
 const emit = defineEmits(['updateInput', 'search']);
-const isClicked = ref(false);
 const searchInput = ref('');
 
 const updateInput = (event: { target: { value: any } }) => {
