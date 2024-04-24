@@ -12,16 +12,16 @@ And your directory should like this:
     |-vue-demo-search
 ```
 open terminal and run
-```
+```bash
 cd vue-demo
 ```
 Add fill your keys in .env.development file.
 
 If you are using SaaS version, you need 3 keys(organizationId, instanceId, apiKey).
 
-If you are using premise version, you need host and api key(optional).
+If you are using Premise version, you need host and api key(optional).
 
-See More about SaaS and premise version in [here](https://github.com/k-ai-Documentation/sdk-js#usage-guide).
+See More about SaaS and Premise version in [here](https://github.com/k-ai-Documentation/sdk-js#usage-guide).
 ```
 # if you are using saas 
 VUE_APP_ORGANIZATION_ID = ''
@@ -34,7 +34,7 @@ VUE_APP_API_KEY = ''
 ```
 
 ## Installation
-```
+```bash
 npm install
 ```
 

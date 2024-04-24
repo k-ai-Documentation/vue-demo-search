@@ -34,7 +34,12 @@ const loadingProgress = ref(0);
 const searchAnswer: Ref<SearchResult | null> = ref(null)
 const loading: Ref<boolean> = ref(false)
 const timeoutFlag: Ref<boolean> = ref(false);
+// if you are using Saas
 const kaiSearch = new KaiStudio({ organizationId: process.env.VUE_APP_ORGANIZATION_ID, instanceId: process.env.VUE_APP_INSTANCE_ID, apiKey: process.env.VUE_APP_API_KEY })
+
+// if you are using premise
+//const kaiSearch = new KaiStudio({ host: process.env.VUE_APP_HOST, apiKey: process.env.VUE_APP_API_KEY })
+
 
 const handleInputUpdate = (newInput: string) => {
     searchInput.value = newInput;
