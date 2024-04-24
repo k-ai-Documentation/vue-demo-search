@@ -15,10 +15,21 @@ open terminal and run
 ```
 cd vue-demo
 ```
-Add your 3 keys in .env.development file.
+Add fill your keys in .env.development file.
+
+If you are using SaaS version, you need 3 keys(organizationId, instanceId, apiKey).
+
+If you are using premise version, you need host and api key(optional).
+
+See More about SaaS and premise version in [here](https://github.com/k-ai-Documentation/sdk-js#usage-guide).
 ```
+# if you are using saas 
 VUE_APP_ORGANIZATION_ID = ''
 VUE_APP_INSTANCE_ID = ''
+VUE_APP_API_KEY = ''
+
+# if you are using version premise. You must need host, but api key is optional, depends on your enterprise settings. 
+VUE_APP_HOST = ''
 VUE_APP_API_KEY = ''
 ```
 
