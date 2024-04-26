@@ -23,37 +23,34 @@
 </template>
 
 <script setup lang="ts">
-import { ref, type Ref } from "vue";
+import { ref, type Ref } from 'vue';
 import SearchBar from './SearchBar.vue';
-import type { SearchResult } from "kaistudio-sdk-js/modules/Search";
-import { KaiStudio } from "kaistudio-sdk-js"
+import type { SearchResult } from 'kaistudio-sdk-js/modules/Search';
+import { KaiStudio } from 'kaistudio-sdk-js';
 
 const newInput = ref('');
 const searchInput = ref('');
 const loadingProgress = ref(0);
-const searchAnswer: Ref<SearchResult | null> = ref(null)
-const loading: Ref<boolean> = ref(false)
-const timeoutFlag: Ref<boolean> = ref(false);
+const searchAnswer: Ref<SearchResult | null> = ref(null);
+const loading: Ref<boolean> = ref(false);
 // if you are using Saas
-const kaiSearch = new KaiStudio({ organizationId: process.env.VUE_APP_ORGANIZATION_ID, instanceId: process.env.VUE_APP_INSTANCE_ID, apiKey: process.env.VUE_APP_API_KEY })
+const kaiSearch = new KaiStudio({ organizationId: process.env.VUE_APP_ORGANIZATION_ID, instanceId: process.env.VUE_APP_INSTANCE_ID, apiKey: process.env.VUE_APP_API_KEY });
 
 // if you are using premise
 //const kaiSearch = new KaiStudio({ host: process.env.VUE_APP_HOST, apiKey: process.env.VUE_APP_API_KEY })
-
 
 const handleInputUpdate = (newInput: string) => {
     searchInput.value = newInput;
 };
 
 const searchNewQuestion = (question: string) => {
-    newInput.value = question
-    searchInput.value = question
+    newInput.value = question;
+    searchInput.value = question;
     searchRequest();
-}
+};
 
 async function searchRequest() {
-    let interval: number | undefined; 
-    timeoutFlag.value = false;
+    let interval: number | undefined;
     try {
         if (searchInput.value) {
             searchAnswer.value = null;
@@ -62,39 +59,34 @@ async function searchRequest() {
             // simulate loading
             interval = setInterval(() => {
                 if (loadingProgress.value < 90) {
-                    loadingProgress.value += 10;
+                    loadingProgress.value += 5 + Math.floor(Math.random() * 5);
                 }
             }, 1000);
 
-            // Start the 20 seconds timeout
-            const timeout = setTimeout(() => {
-                if (!timeoutFlag.value) { 
-                    timeoutFlag.value = true;
-                    loading.value = false;
-                    searchAnswer.value = {answer:''};
-                }
-            }, 20000); // 20 seconds
-            const request = await kaiSearch.search().query(searchInput.value, "");
-            if(!timeoutFlag.value) {
-                loadingProgress.value = 100;
-                await new Promise(resolve => setTimeout(resolve, 500)); 
-                searchAnswer.value = request;
-            }
-            clearTimeout(timeout); // Clear the timeout as response has been received
+            const request = await kaiSearch.search().query(searchInput.value, '');
+            loadingProgress.value = 100;
+            await new Promise((resolve) => setTimeout(resolve, 500)); //wait 500ms, let user see 100% 
+            searchAnswer.value = request;
         }
     } catch (e) {
         console.error(e);
+        searchAnswer.value = {
+            query: searchInput.value,
+            answer: 'No results. Please rephrase or ask another question.',
+            reason: '',
+            confidentRate: 0,
+            gotAnswer: false,
+            documents: [],
+            followingQuestions: [],
+        };
     } finally {
         if (interval !== undefined) clearInterval(interval);
         loading.value = false;
     }
 }
-
 </script>
 
-
 <style lang="scss">
-
 .search-box {
     width: 799px;
     height: auto;
@@ -115,7 +107,7 @@ async function searchRequest() {
         margin-top: 8px;
     }
     .no-answer {
-        margin-top: 8px
+        margin-top: 8px;
     }
 
     .search-result {
@@ -141,6 +133,4 @@ async function searchRequest() {
         }
     }
 }
-    
-
 </style>
