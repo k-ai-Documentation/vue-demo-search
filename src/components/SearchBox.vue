@@ -17,7 +17,7 @@
                 p.text-regular-14.text-grey.subtitle Sources
                 p.text-white(v-for="source in searchAnswer.documents")
                     a(:href="source.url" target="_blank") {{ source.name }}
-            .answer-block
+            .answer-block(v-if="needFollowingQuestions")
                 p.text-regular-14.text-grey.subtitle Related-questions 
                 p.text-white.clickable(v-for="(question, index) in searchAnswer.followingQuestions" :key="index" @click="searchNewQuestion(question)") {{ question }}
 </template>
@@ -35,6 +35,9 @@ const searchAnswer: Ref<SearchResult | null> = ref(null);
 const loading: Ref<boolean> = ref(false);
 // if you are using Saas
 const kaiSearch = new KaiStudio({ organizationId: process.env.VUE_APP_ORGANIZATION_ID, instanceId: process.env.VUE_APP_INSTANCE_ID, apiKey: process.env.VUE_APP_API_KEY });
+
+const needFollowingQuestions: boolean = process.env.VUE_APP_NEED_FOLLOWING_QUESTIONS === 'true';
+const multiDocuments: boolean = process.env.VUE_APP_MULTI_DOCUMENTS === 'true';
 
 // if you are using premise
 //const kaiSearch = new KaiStudio({ host: process.env.VUE_APP_HOST, apiKey: process.env.VUE_APP_API_KEY })
@@ -63,7 +66,7 @@ async function searchRequest() {
                 }
             }, 1000);
 
-            const request = await kaiSearch.search().query(searchInput.value, '');
+            const request = await kaiSearch.search().query(searchInput.value, 'userid', '', process.env.VUE_APP_MULTI_DOCUMENTS, process.env.VUE_APP_NEED_FOLLOWING_QUESTIONS);
             loadingProgress.value = 100;
             await new Promise((resolve) => setTimeout(resolve, 500)); //wait 500ms, let user see 100% 
             searchAnswer.value = request;

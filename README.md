@@ -13,7 +13,7 @@ And your directory should like this:
 ```
 open terminal and run
 ```bash
-cd vue-demo
+cd vue-demo-search
 ```
 Add fill your keys in .env.development file.
 
@@ -41,6 +41,11 @@ npm install
 ### Compiles and hot-reloads for development
 ```
 npm run serve
+```
+You can change paramater in .env.development file to change the search result.
+```bash
+VUE_APP_MULTI_DOCUMENTS = true # if you want to search result have multiple documents sources, set it to true.
+VUE_APP_NEED_FOLLOWING_QUESTIONS = true # if you want to search result have following questions, set it to true.
 ```
 
 # How to use [sdk-js](https://github.com/k-ai-Documentation/sdk-js)
@@ -72,7 +77,7 @@ async function searchRequest(){
     try {
         if(searchInput.value) {
             searchAnswer.value = null
-            const request = await sdk.search().query(searchInput.value, "")
+            const request = await sdk.search().query(searchInput.value, 'userid', '', process.env.VUE_APP_MULTI_DOCUMENTS, process.env.VUE_APP_NEED_FOLLOWING_QUESTIONS)
             searchAnswer.value = request
         }
     } catch(e) {

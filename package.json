@@ -10,7 +10,7 @@
   "dependencies": {
     "core-js": "^3.8.3",
     "kai-assets": "git@github.com:k-ai-Documentation/kai-assets.git",
-    "kaistudio-sdk-js": "git@github.com:k-ai-Documentation/sdk-js.git",
+    "kaistudio-sdk-js": "git@github.com:k-ai-Documentation/sdk-js.git#version2.0",
     "pug": "^3.0.2",
     "sass-loader": "^13.3.2",
     "vue": "^3.2.13",
