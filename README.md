@@ -1,7 +1,7 @@
 # vue-demo-search
 
 ## Introduce
-This project is a demo for vue3, which contains 'search' function with sdk-js. This demo will show you how to use sdk-js in vue3.
+This project is a demo for vue3, which contains 'search' and 'search with identify document' function with sdk-js. This demo will show you how to use sdk-js in vue3.
 
 ## Before setup
 [vue-demo-search](https://github.com/k-ai-Documentation/vue-demo-search).
