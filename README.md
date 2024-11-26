@@ -54,11 +54,11 @@ VUE_APP_NEED_FOLLOWING_QUESTIONS = true # if you want to search result have foll
 ```
 npm install
 ```
-+ check in your package.json and node_modules, sdk-js should be installed.
++ check in your package.json and node_modules, kaistudio-sdk-js should be installed.
 
 + check .env.development has VUE_APP_ORGANIZATION_ID, VUE_APP_INSTANCE_ID and VUE_APP_API_KEY.
 
-+ in your vue file, import sdk-js.
++ in your vue file, import kaistudio-sdk-js.
 ```
 import { KaiStudio } from "kaistudio-sdk-js";
 ```
