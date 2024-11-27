@@ -25,74 +25,88 @@ const kaiSearch = new KaiStudio({ organizationId: process.env.VUE_APP_ORGANIZATI
 const needFollowingQuestions: boolean = process.env.VUE_APP_NEED_FOLLOWING_QUESTIONS === 'true';
 const multiDocuments: boolean = process.env.VUE_APP_MULTI_DOCUMENTS === 'true';
 
-
 const messageHistory = ref<{ from: string; message: string }[]>([]);
+const currentChat = ref<{ from: string; message: string }[]>([]); 
 const userMessage = ref('');
 const foundQuestion = ref(false);
-const correctQuestion = ref('')
+const correctQuestion = ref('');
 
-const sendMessage = async() => {
-    messageHistory.value.push({ from: 'user', message: userMessage.value });
-    userMessage.value = '';
+const sendMessage = async () => {
+    const userMsg = { from: 'user', message: userMessage.value };
+    messageHistory.value.push(userMsg);
+    currentChat.value.push(userMsg);
+    
+    userMessage.value = ''; 
+
     await identifySpecificDocument();
+
     if (foundQuestion.value) {
         const result = await search();
-        messageHistory.value.pop();
-        if(result.gotAnswer){
-            messageHistory.value.push({ from: 'assistance', message: "Answer:" });
-            messageHistory.value.push({ from: 'assistance', message: result.answer });
+        messageHistory.value.pop(); //delete "Searching for answer.." message
+        processSearchResult(result); 
 
-            if(result.documents.length > 0 ) {
-                let documents = ''
-                for( let i = 0; i < result.documents.length; i++) {
-                    documents += "name:" + result.documents[i].name + '\n' + "url:" + result.documents[i].url + '\n\n';
-                }
-                messageHistory.value.push({ from: 'assistance', message: "Source:" });
-                messageHistory.value.push({ from: 'assistance', message: documents });
-            }
-            
-            if(needFollowingQuestions) {
-                messageHistory.value.push({ from: 'assistance', message: "following questions:" });
-                let questions = ''
-                for( let i = 0; i < result.followingQuestions.length; i++) {
-                    questions += ' - ' + result.followingQuestions[i] + '\n';
-                }
-                messageHistory.value.push({ from: 'assistance', message: questions });
-            }
-        }else {
-            messageHistory.value.push({ from: 'assistance', message: "Sorry, I couldn't find an answer to your question." });
-        }
-        
         foundQuestion.value = false;
         correctQuestion.value = '';
+        currentChat.value = []; 
     }
-}
+};
 
 async function identifySpecificDocument() {
-    const result = await kaiSearch.search().identifySpecificDocument(messageHistory.value);
+    const result = await kaiSearch.search().identifySpecificDocument(currentChat.value);
+
     if (!result) {
         return;
     }
-    if (result.isFinal == true) {
+
+    if (result.isFinal) {
         foundQuestion.value = true;
         correctQuestion.value = result.question;
-        messageHistory.value.push({ from: 'assistance', message: "Correct question found: " + result.question }); 
+
+        messageHistory.value.push({ from: 'assistance', message: "Correct question found: " + result.question });
         messageHistory.value.push({ from: 'assistance', message: "Searching for answer..." });
-    }else {
+    } else {
         messageHistory.value.push({ from: 'assistance', message: result.question });
+        currentChat.value.push({ from: 'assistance', message: result.question }); 
     }
 }
 
 async function search() {
-    const result = await kaiSearch.search().query(correctQuestion.value, 'userid', '',multiDocuments, needFollowingQuestions );
-    return result;
+    return await kaiSearch.search().query(correctQuestion.value, 'userid', '', multiDocuments, needFollowingQuestions);
 }
 
+function processSearchResult(result: any) {
+    if (result.gotAnswer) {
+        messageHistory.value.push({ from: 'assistance', message: "Answer:" });
+        messageHistory.value.push({ from: 'assistance', message: result.answer });
 
+        if (result.documents.length > 0) {
+            let documents = '';
+            for (let doc of result.documents) {
+                documents += `name: ${doc.name}\nurl: ${doc.url}\n\n`;
+            }
+            messageHistory.value.push({ from: 'assistance', message: "Source:" });
+            messageHistory.value.push({ from: 'assistance', message: documents });
+        }
+
+        if (needFollowingQuestions) {
+            let questions = '';
+            for (let question of result.followingQuestions) {
+                questions += ` - ${question}\n`;
+            }
+            messageHistory.value.push({ from: 'assistance', message: "following questions:" });
+            messageHistory.value.push({ from: 'assistance', message: questions });
+        }
+    } else {
+        messageHistory.value.push({ from: 'assistance', message: "Sorry, I couldn't find an answer to your question." });
+    }
+}
 
 onMounted(() => {
     messageHistory.value.push({ from: 'assistance', message: 'Hello, how can I help you today?' });
 });
+
+
+
 </script>
 
 <style lang="scss" scoped>
