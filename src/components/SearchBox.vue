@@ -66,7 +66,7 @@ async function searchRequest() {
                 }
             }, 1000);
 
-            const request = await kaiSearch.search().query(searchInput.value, 'userid', '', process.env.VUE_APP_MULTI_DOCUMENTS, process.env.VUE_APP_NEED_FOLLOWING_QUESTIONS);
+            const request = await kaiSearch.search().query(searchInput.value, 'demo_vue', '', process.env.VUE_APP_MULTI_DOCUMENTS, process.env.VUE_APP_NEED_FOLLOWING_QUESTIONS);
             loadingProgress.value = 100;
             await new Promise((resolve) => setTimeout(resolve, 500)); //wait 500ms, let user see 100% 
             searchAnswer.value = request;

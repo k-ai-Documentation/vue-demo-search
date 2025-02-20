@@ -71,7 +71,7 @@ async function identifySpecificDocument() {
 }
 
 async function search() {
-    return await kaiSearch.search().query(correctQuestion.value, 'userid', '', multiDocuments, needFollowingQuestions);
+    return await kaiSearch.search().query(correctQuestion.value, 'demo_vue', '', multiDocuments, needFollowingQuestions);
 }
 
 function processSearchResult(result: any) {
